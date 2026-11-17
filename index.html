@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Epik Leaders Esprit HR</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#EDF1F6; --surface:#FFFFFF; --ink:#0D2036; --muted:#566A80; --line:#D2DBE6;
+  --accent:#1D5A7D; --accent-ink:#FFFFFF; --accent-soft:#D8E7F1; --brand:#D62839;
+  --good:#1B7F4B; --good-soft:#DDF1E5; --warn:#8F5500; --warn-soft:#FBEBCF; --bad:#B3261E; --bad-soft:#F9DEDB;
+  --font-display:"Space Grotesk","Inter",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0A1626; --surface:#102338; --ink:#E8EEF5; --muted:#92A6BB; --line:#223A53;
+    --accent:#5DB0DA; --accent-ink:#06141F; --accent-soft:#16384F; --brand:#FF5766;
+    --good:#5CC48A; --good-soft:#14301F; --warn:#E8B04D; --warn-soft:#3A2C12; --bad:#F28B82; --bad-soft:#3A1A18;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.5;
+  padding:20px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:26px;font-weight:700}
+h2{font-size:18px;font-weight:600}
+h3{font-size:15px;font-weight:600}
+small,.muted{color:var(--muted)}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px;border-left:5px solid var(--brand);padding-left:14px}
+.top p{margin:4px 0 0;color:var(--muted)}
+.topbtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.notice{background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:8px 12px;font-size:13px}
+.notice.bad{background:var(--bad-soft);color:var(--bad)}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font:600 14px var(--font-body);padding:10px 14px;cursor:pointer;white-space:nowrap}
+nav button[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.stack{display:flex;flex-direction:column;gap:14px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.kpi b{display:block;font:700 28px var(--font-display);font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:13px}
+.head-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px}
+.btn{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);border-radius:6px;font:600 13px var(--font-body);padding:8px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.small{padding:4px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:default}
+label{display:flex;flex-direction:column;gap:4px;font-weight:500;font-size:13px}
+input,select{font:14px var(--font-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-width:0;width:100%}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;align-items:end}
+.check{flex-direction:row;align-items:flex-start;gap:8px;font-weight:400;color:var(--muted)}
+.check input{width:auto;margin-top:3px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.mono{font-family:var(--font-mono);letter-spacing:.06em}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.muted{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.pill.accent{background:var(--accent-soft);color:var(--accent)}
+.trow{display:grid;grid-template-columns:minmax(120px,200px) 1fr minmax(110px,150px);gap:6px 14px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.trow:last-child{border-bottom:0}
+.tname{min-width:0;font-weight:600}
+.tname small{display:block;font-weight:400}
+.tbar{position:relative;height:14px;background:var(--bg);border-radius:3px;overflow:hidden}
+.tbar i{position:absolute;left:0;top:0;bottom:0;display:block}
+.tbar .r{background:var(--accent-soft)}
+.tbar .p{background:var(--accent)}
+.tnum{text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+@media (max-width:560px){.trow{grid-template-columns:1fr}.tnum{text-align:left}}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.list{display:flex;flex-direction:column}
+.li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border-bottom:0}
+.li>div{min-width:0}
+.evgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.evcard{text-align:left;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.evcard:hover{border-color:var(--accent)}
+.meter{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent)}
+.facts{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted)}
+.result{border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.result b{font:600 18px var(--font-display)}
+.result.ok{background:var(--good-soft);color:var(--good)}
+.result.dup{background:var(--warn-soft);color:var(--warn)}
+.result.bad{background:var(--bad-soft);color:var(--bad)}
+.result.idle{background:var(--bg);color:var(--muted)}
+.scan{display:flex;gap:8px;flex-wrap:wrap}
+.scan input{flex:1 1 180px;font:600 18px var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
+#reader{max-width:360px;width:100%;border-radius:8px;overflow:hidden}
+.ticket{display:flex;gap:18px;flex-wrap:wrap;align-items:center;border:2px dashed var(--accent);border-radius:10px;padding:16px}
+.qr{background:#fff;padding:6px;border-radius:6px;width:160px;height:160px;display:flex}
+.qr svg{width:100%;height:100%}
+.ticket .code{font:700 28px var(--font-mono);letter-spacing:.14em;color:var(--accent)}
+.err{color:var(--bad);font-size:13px}
+.tasks label{flex-direction:row;align-items:center;gap:8px;font-weight:400;font-size:14px;padding:5px 0}
+.tasks input{width:auto}
+.login{max-width:420px;margin:20px auto 0;width:100%}
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+.linkrow input{flex:1 1 220px;font-size:12px}
+textarea{width:100%;min-height:120px;font:12px var(--font-mono);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px}
+@media (prefers-reduced-motion:no-preference){.meter i,.tbar i{transition:width .3s}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="card">Loading…</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+(function(){
+var DAY=864e5;
+var app=document.getElementById('app');
+var sb=null;
+if(window.supabase&&window.APP_CONFIG){sb=window.supabase.createClient(window.APP_CONFIG.SUPABASE_URL,window.APP_CONFIG.SUPABASE_KEY)}
+var S={members:[],events:[],regs:[]};
+var user=null, view='dashboard', selEvent=null, ciEvent=null, ciResult=null, ciQuery='', ticket=null, regMsg=null;
+var showNew=false, csvOpen=false, scanner=null, loading=false, loadErr=null, notice=null, lastScan={t:'',at:0}, loaded=false;
+
+/* ---------- helpers ---------- */
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function todayStr(){return ymd(new Date())}
+function plusDays(n){return ymd(new Date(Date.now()+n*DAY))}
+function isPast(e){return e.date<todayStr()}
+function fmtDate(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
+function fmtTime(t){return t?new Date(t).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):''}
+function pct(x){return Math.round(x*100)+'%'}
+function first(n){return String(n).split(' ')[0]}
+function pill(k,t){return '<span class="pill '+k+'">'+esc(t)+'</span>'}
+function mById(id){return S.members.filter(function(m){return m.id===id})[0]||{id:id,name:'Unknown member',email:''}}
+function eById(id){return S.events.filter(function(e){return e.id===id})[0]}
+function regsOf(id){return S.regs.filter(function(r){return r.eventId===id})}
+function evStats(e){var rs=regsOf(e.id),p=rs.filter(function(r){return r.status==='present'}).length;return {reg:rs.length,pres:p,rate:rs.length?p/rs.length:0}}
+function pastEvents(){return S.events.filter(isPast).sort(function(a,b){return b.date.localeCompare(a.date)})}
+function mstats(m){
+  var past=pastEvents(), att=0, reg=0, pts=0, last=null, recent=0;
+  past.forEach(function(e,i){
+    var r=S.regs.filter(function(x){return x.eventId===e.id&&x.memberId===m.id})[0];
+    if(r){reg++;if(r.status==='present'){att++;pts++;if(!last)last=e.date;if(i<2)recent++}}
+    if(e.organizer===m.id)pts+=3;
+  });
+  return {att:att,reg:reg,pts:pts,last:last,recent:recent,rate:reg?att/reg:0,quiet:att>0&&recent===0};
+}
+function statusOf(r,e){
+  if(r.status==='present')return ['good','Present'];
+  return isPast(e)?['bad','Absent']:['muted','Registered'];
+}
+function qrSvg(text){
+  try{if(typeof qrcode==='undefined')return '';var q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch(e){return ''}
+}
+
+/* ---------- data ---------- */
+async function fetchAll(table){
+  var out=[], from=0;
+  for(;;){
+    var r=await sb.from(table).select('*').order('id').range(from,from+999);
+    if(r.error)throw r.error;
+    out=out.concat(r.data);
+    if(r.data.length<1000)break;
+    from+=1000;
+  }
+  return out;
+}
+function mapMember(m){return {id:m.id,name:m.name,email:m.email}}
+function mapReg(r){return {id:r.id,code:r.code,eventId:r.event_id,memberId:r.member_id,status:r.status,at:r.checked_in_at}}
+function byTitle(a,b){return String(a.title).localeCompare(String(b.title))}
+async function loadAll(){
+  loading=true;loadErr=null;render();
+  try{
+    var res=await Promise.all([fetchAll('members'),fetchAll('events'),fetchAll('tasks'),fetchAll('registrations')]);
+    S.members=res[0].map(mapMember);
+    S.regs=res[3].map(mapReg);
+    var tasks=res[2];
+    S.events=res[1].map(function(e){
+      return {id:e.id,title:e.title,type:e.type,date:e.event_date,time:String(e.event_time||'').slice(0,5),place:e.place,capacity:e.capacity,organizer:e.organizer_id,
+        tasks:tasks.filter(function(t){return t.event_id===e.id}).sort(byTitle).map(function(t){return {id:t.id,t:t.title,o:t.owner_id,d:t.done}})};
+    });
+    loaded=true;
+  }catch(e){loadErr=(e&&e.message)||String(e)}
+  loading=false;render();
+}
+async function refreshLive(){
+  var res=await Promise.all([fetchAll('members'),fetchAll('registrations')]);
+  S.members=res[0].map(mapMember);
+  S.regs=res[1].map(mapReg);
+}
+
+/* ---------- views ---------- */
+function vLogin(){
+  return '<div class="card login stack"><h2>HR team login</h2><form class="stack" data-form="login"><label>Email<input id="l-email" type="email" autocomplete="username" required></label>'+
+    '<label>Password<input id="l-pass" type="password" autocomplete="current-password" required></label><button class="btn" type="submit">Sign in</button><div class="err" id="l-msg" role="alert"></div></form>'+
+    '<small>Accounts are created by the club administrator. There is no public sign-up.</small></div>';
+}
+function vDashboard(){
+  if(!S.events.length)return '<div class="card stack"><h2>No events yet</h2><p class="muted" style="margin:0">Create your first event in the Events tab. Turnout, engagement and quiet members will appear here once people register and check in.</p><div><button class="btn" data-a="tab" data-v="events">Go to Events</button></div></div>';
+  var past=pastEvents(), tr=0, tp=0;
+  past.forEach(function(e){var s=evStats(e);tr+=s.reg;tp+=s.pres});
+  var ms=S.members.map(function(m){return {m:m,s:mstats(m)}});
+  var active=ms.filter(function(x){return x.s.recent>0}).length;
+  var upReg=S.events.filter(function(e){return !isPast(e)}).reduce(function(a,e){return a+regsOf(e.id).length},0);
+  var sorted=S.events.slice().sort(function(a,b){return a.date.localeCompare(b.date)});
+  var max=Math.max.apply(null,sorted.map(function(e){return regsOf(e.id).length}).concat([1]));
+  var rows=sorted.map(function(e){
+    var s=evStats(e), up=!isPast(e);
+    return '<div class="trow"><div class="tname">'+esc(e.title)+'<small>'+fmtDate(e.date)+' · '+esc(e.type)+'</small></div>'+
+      '<div class="tbar" role="img" aria-label="'+s.pres+' present of '+s.reg+' registered"><i class="r" style="width:'+(s.reg/max*100)+'%"></i>'+(up?'':'<i class="p" style="width:'+(s.pres/max*100)+'%"></i>')+'</div>'+
+      '<div class="tnum">'+(up?s.reg+' registered · upcoming':s.pres+' / '+s.reg+' · '+pct(s.rate))+'</div></div>';
+  }).join('');
+  var top=ms.slice().sort(function(a,b){return b.s.pts-a.s.pts}).filter(function(x){return x.s.pts>0}).slice(0,6).map(function(x,i){
+    return '<div class="li"><div><b>'+(i+1)+'. '+esc(x.m.name)+'</b><br><small>'+x.s.att+' events attended · '+pct(x.s.rate)+' attendance</small></div>'+pill('accent',x.s.pts+' pts')+'</div>';
+  }).join('')||'<p class="muted">Points appear after the first event is held.</p>';
+  var quiet=ms.filter(function(x){return x.s.quiet}).map(function(x){
+    var days=Math.round((Date.now()-new Date(x.s.last+'T00:00:00').getTime())/DAY);
+    return '<div class="li"><div><b>'+esc(x.m.name)+'</b><br><small>Last attended '+fmtDate(x.s.last)+' ('+days+' days ago)</small></div>'+pill('warn','Quiet')+'</div>';
+  }).join('')||'<p class="muted">Nobody has gone quiet.</p>';
+  var types={};
+  past.forEach(function(e){var s=evStats(e),t=types[e.type]||(types[e.type]={n:0,r:0,p:0});t.n++;t.r+=s.reg;t.p+=s.pres});
+  var trows=Object.keys(types).map(function(k){var t=types[k];return '<div class="li"><div><b>'+esc(k)+'</b><br><small>'+t.n+' event'+(t.n>1?'s':'')+'</small></div><b>'+(t.r?pct(t.p/t.r):'–')+'</b></div>'}).join('')||'<p class="muted">No past events yet.</p>';
+  return '<div class="kpis">'+
+    '<div class="kpi"><b>'+past.length+'</b><span>Events held</span></div>'+
+    '<div class="kpi"><b>'+(tr?pct(tp/tr):'–')+'</b><span>Average attendance of registered</span></div>'+
+    '<div class="kpi"><b>'+active+' / '+S.members.length+'</b><span>Members active in the last 2 events</span></div>'+
+    '<div class="kpi"><b>'+upReg+'</b><span>Registered for upcoming events</span></div></div>'+
+    '<div class="card"><div class="head-row"><h2>Turnout per event</h2><div class="legend"><span><i style="background:var(--accent-soft)"></i>Registered</span><span><i style="background:var(--accent)"></i>Present</span></div></div>'+rows+'</div>'+
+    '<div class="grid2"><div class="card"><h2>Most engaged members</h2><small>1 point per event attended, 3 per event organized</small><div class="list">'+top+'</div></div>'+
+    '<div class="card"><h2>Gone quiet</h2><small>Attended before, but missed the last 2 events</small><div class="list">'+quiet+'</div></div></div>'+
+    '<div class="grid2"><div class="card"><h2>Attendance by event type</h2><div class="list">'+trows+'</div></div>'+
+    '<div class="card stack"><div class="head-row"><h2>Export for the board</h2><button class="btn ghost small" data-a="csv">'+(csvOpen?'Hide':'Show')+' attendance CSV</button></div><small>One row per registration, ready to paste into Excel or Sheets.</small>'+(csvOpen?'<textarea id="csv" readonly>'+esc(csvText())+'</textarea><div><button class="btn small" data-a="copycsv">Copy CSV</button> <span class="muted" id="csvmsg"></span></div>':'')+'</div></div>';
+}
+function csvText(){
+  var q=function(s){return '"'+String(s).replace(/"/g,'""')+'"'};
+  var rows=[['Event','Date','Name','Email','Ticket','Status','Checked in at'].join(',')];
+  S.events.slice().sort(function(a,b){return a.date.localeCompare(b.date)}).forEach(function(e){
+    regsOf(e.id).forEach(function(r){var m=mById(r.memberId),st=statusOf(r,e)[1];rows.push([q(e.title),e.date,q(m.name),m.email,r.code,st,r.at?fmtTime(r.at):''].join(','))});
+  });
+  return rows.join('\n');
+}
+
+function memberOptions(sel){
+  return '<option value="">None</option>'+S.members.slice().sort(function(a,b){return a.name.localeCompare(b.name)}).map(function(m){return '<option value="'+m.id+'"'+(m.id===sel?' selected':'')+'>'+esc(m.name)+'</option>'}).join('');
+}
+function vEvents(){
+  if(selEvent&&eById(selEvent))return vDetail(eById(selEvent));
+  var sorted=S.events.slice().sort(function(a,b){return b.date.localeCompare(a.date)});
+  var cards=sorted.map(function(e){
+    var s=evStats(e), up=!isPast(e), done=e.tasks.filter(function(t){return t.d}).length;
+    return '<button class="card evcard" data-a="open" data-id="'+e.id+'"><div class="head-row"><h3>'+esc(e.title)+'</h3>'+(up?pill('accent','Upcoming'):pill('muted','Held'))+'</div>'+
+      '<div class="facts"><span>'+fmtDate(e.date)+' · '+esc(e.time)+'</span><span>'+esc(e.place)+'</span><span>'+esc(e.type)+'</span></div>'+
+      '<div class="meter"><i style="width:'+Math.min(100,s.reg/e.capacity*100)+'%"></i></div>'+
+      '<small>'+s.reg+' of '+e.capacity+' places registered'+(up?'':' · '+s.pres+' present ('+pct(s.rate)+')')+' · '+done+'/'+e.tasks.length+' tasks done</small></button>';
+  }).join('')||'<div class="card muted">No events yet. Press "New event" to create the first one.</div>';
+  var nf=showNew?'<form class="card stack" data-form="new"><h2>New event</h2><div class="form">'+
+    '<label>Title<input id="n-title" required></label><label>Date<input id="n-date" type="date" required value="'+plusDays(7)+'"></label><label>Time<input id="n-time" type="time" value="18:00"></label>'+
+    '<label>Place<input id="n-place" required></label><label>Type<select id="n-type"><option>Workshop</option><option>Training</option><option>Social</option><option>Meeting</option></select></label>'+
+    '<label>Capacity<input id="n-cap" type="number" min="1" value="40"></label><label>Organizer<select id="n-org">'+memberOptions('')+'</select></label></div>'+
+    '<div><button class="btn" type="submit">Create event</button> <button class="btn ghost" type="button" data-a="newtoggle">Cancel</button></div></form>':'';
+  return '<div class="head-row"><h2>Events</h2><button class="btn" data-a="newtoggle">'+(showNew?'Close form':'New event')+'</button></div>'+nf+'<div class="evgrid">'+cards+'</div>';
+}
+function vDetail(e){
+  var s=evStats(e), up=!isPast(e);
+  var link=new URL('register.html?e='+e.id,location.href).href;
+  var rs=regsOf(e.id).slice().sort(function(a,b){return mById(a.memberId).name.localeCompare(mById(b.memberId).name)});
+  var rows=rs.map(function(r){var m=mById(r.memberId),st=statusOf(r,e);return '<tr><td>'+esc(m.name)+'</td><td>'+esc(m.email)+'</td><td class="mono">'+esc(r.code)+'</td><td>'+pill(st[0],st[1])+'</td><td>'+(r.at?fmtTime(r.at):'–')+'</td></tr>'}).join('')||'<tr><td colspan="5" class="muted">No registrations yet.</td></tr>';
+  var tasks=e.tasks.map(function(t,i){return '<label><input type="checkbox" data-a="task" data-id="'+e.id+'" data-i="'+i+'"'+(t.d?' checked':'')+'> <span>'+esc(t.t)+(t.o?' <small>· '+esc(first(mById(t.o).name))+'</small>':'')+'</span></label>'}).join('');
+  var tk='';
+  if(ticket&&ticket.eventId===e.id){
+    var svg=qrSvg(ticket.code);
+    tk='<div class="ticket"><div class="qr" role="img" aria-label="QR code for ticket '+esc(ticket.code)+'">'+(svg||'<span style="color:#000;margin:auto;font-size:12px">QR unavailable</span>')+'</div><div class="stack"><small>Ticket for '+esc(e.title)+'</small><div class="code">'+esc(ticket.code)+'</div><div><b>'+esc(ticket.name)+'</b><br><small>'+fmtDate(e.date)+' · '+esc(e.time)+' · '+esc(e.place)+'</small></div><div><button class="btn ghost small" data-a="closeticket">Close</button></div></div></div>';
+  }
+  var msg=regMsg?'<div class="err" role="alert">'+esc(regMsg)+'</div>':'';
+  return '<div class="head-row"><button class="btn ghost small" data-a="back">← All events</button><button class="btn small" data-a="gocheckin" data-id="'+e.id+'">Open check-in</button></div>'+
+    '<div class="card stack"><div class="head-row"><h2>'+esc(e.title)+'</h2>'+(up?pill('accent','Upcoming'):pill('muted','Held'))+'</div>'+
+    '<div class="facts"><span>'+fmtDate(e.date)+' · '+esc(e.time)+'</span><span>'+esc(e.place)+'</span><span>'+esc(e.type)+'</span><span>Organizer: '+esc(e.organizer?mById(e.organizer).name:'none')+'</span></div>'+
+    '<div class="meter"><i style="width:'+Math.min(100,s.reg/e.capacity*100)+'%"></i></div><small>'+s.reg+' of '+e.capacity+' places registered · '+s.pres+' present'+(s.reg&&!up?' ('+pct(s.rate)+')':'')+'</small>'+
+    '<div class="stack"><b>Public registration link</b><div class="linkrow"><input id="plink" readonly value="'+esc(link)+'" aria-label="Public registration link"><button class="btn small" data-a="copylink">Copy link</button></div><small id="linkmsg">Share this link on Instagram or WhatsApp. Attendees register themselves and get a QR ticket.</small></div></div>'+
+    '<div class="grid2"><div class="card stack"><h3>Register someone yourself</h3>'+
+    '<form class="stack" data-form="reg"><div class="form"><label>Full name<input id="r-name" autocomplete="off"></label><label>Email<input id="r-email" type="email" autocomplete="off"></label></div>'+
+    '<div><button class="btn" type="submit">Register and show ticket</button></div>'+msg+'</form>'+tk+'</div>'+
+    '<div class="card stack tasks"><h3>Task checklist</h3><div>'+(tasks||'<span class="muted">No tasks.</span>')+'</div></div></div>'+
+    '<div class="card stack"><h3>Registrations</h3><div class="tablewrap"><table><thead><tr><th>Name</th><th>Email</th><th>Ticket</th><th>Status</th><th>Checked in</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function ciList(){
+  var e=eById(ciEvent), q=ciQuery.trim().toLowerCase();
+  if(!e)return '';
+  var rs=regsOf(e.id).filter(function(r){var m=mById(r.memberId);return !q||m.name.toLowerCase().indexOf(q)>-1||r.code.toLowerCase().indexOf(q)>-1})
+    .sort(function(a,b){return mById(a.memberId).name.localeCompare(mById(b.memberId).name)});
+  if(!rs.length)return '<p class="muted">No matching registration. Use the walk-in form.</p>';
+  return '<div class="list">'+rs.map(function(r){
+    var m=mById(r.memberId), done=r.status==='present';
+    return '<div class="li"><div><b>'+esc(m.name)+'</b><br><small class="mono">'+esc(r.code)+'</small></div><div>'+(done?pill('good','Present '+fmtTime(r.at)):'<button class="btn small" data-a="scan" data-code="'+esc(r.code)+'">Check in</button>')+'</div></div>';
+  }).join('')+'</div>';
+}
+function ciResultBox(){
+  if(!ciResult)return '<div class="result idle"><span>Waiting for the next ticket.</span></div>';
+  return '<div class="result '+ciResult.kind+'"><b>'+esc(ciResult.title)+'</b><span>'+esc(ciResult.msg)+'</span></div>';
+}
+function vCheckin(){
+  if(!S.events.length)return '<div class="card stack"><h2>Check-in</h2><p class="muted" style="margin:0">Create an event first, then come back here on the day.</p></div>';
+  if(!ciEvent||!eById(ciEvent)){
+    var t=todayStr(), u=S.events.filter(function(e){return e.date>=t}).sort(function(a,b){return a.date.localeCompare(b.date)})[0];
+    ciEvent=(u||S.events.slice().sort(function(a,b){return b.date.localeCompare(a.date)})[0]).id;
+  }
+  var e=eById(ciEvent), s=evStats(e);
+  var opts=S.events.slice().sort(function(a,b){return b.date.localeCompare(a.date)}).map(function(x){return '<option value="'+x.id+'"'+(x.id===ciEvent?' selected':'')+'>'+esc(x.title)+' · '+fmtDate(x.date)+'</option>'}).join('');
+  return '<div class="head-row"><h2>Check-in</h2></div>'+
+    '<div class="card stack"><label>Event<select id="ci-event">'+opts+'</select></label>'+
+    '<div><b id="ci-count" style="font:700 22px var(--font-display)">'+s.pres+' / '+s.reg+'</b> <span class="muted">checked in</span></div><div class="meter"><i id="ci-meter" style="width:'+(s.reg?s.pres/s.reg*100:0)+'%"></i></div>'+
+    '<div><button class="btn" id="cam-btn" data-a="camera">Scan with camera</button></div><div id="reader" hidden></div>'+
+    '<form class="scan" data-form="code"><input id="ci-code" maxlength="8" placeholder="K7M2QX" autocomplete="off" aria-label="Ticket code"><button class="btn" type="submit">Check in</button></form>'+
+    '<div id="ci-result" role="status" aria-live="polite">'+ciResultBox()+'</div></div>'+
+    '<div class="grid2"><div class="card stack"><h3>Registered attendees</h3><label>Search by name or code<input id="ci-q" value="'+esc(ciQuery)+'" autocomplete="off"></label><div id="ci-list">'+ciList()+'</div></div>'+
+    '<form class="card stack" data-form="walk"><h3>Walk-in without a ticket</h3><div class="form"><label>Full name<input id="w-name" autocomplete="off"></label><label>Email<input id="w-email" type="email" autocomplete="off"></label></div><div><button class="btn ghost" type="submit">Register and check in</button></div></form></div>';
+}
+function paintCi(){
+  if(view!=='checkin')return;
+  var e=eById(ciEvent);if(!e||!$('ci-count'))return;
+  var s=evStats(e);
+  $('ci-count').textContent=s.pres+' / '+s.reg;
+  $('ci-meter').style.width=(s.reg?s.pres/s.reg*100:0)+'%';
+  $('ci-list').innerHTML=ciList();
+  $('ci-result').innerHTML=ciResultBox();
+}
+
+function vMembers(){
+  var rows=S.members.map(function(m){return {m:m,s:mstats(m)}}).sort(function(a,b){return b.s.pts-a.s.pts||a.m.name.localeCompare(b.m.name)}).map(function(x){
+    var st=x.s.recent>0?pill('good','Active'):x.s.quiet?pill('warn','Quiet'):pill('muted',x.s.reg?'No attendance':'No events yet');
+    return '<tr><td>'+esc(x.m.name)+'</td><td>'+esc(x.m.email)+'</td><td class="num">'+x.s.att+' / '+x.s.reg+'</td><td class="num">'+(x.s.reg?pct(x.s.rate):'–')+'</td><td class="num">'+x.s.pts+'</td><td>'+(x.s.last?fmtDate(x.s.last):'–')+'</td><td>'+st+'</td></tr>';
+  }).join('')||'<tr><td colspan="7" class="muted">No members yet. They are added when they register, or you can add them below.</td></tr>';
+  return '<div class="head-row"><h2>Members</h2><small>Members are added automatically when they register for an event.</small></div>'+
+    '<form class="card stack" data-form="member"><h3>Add a member</h3><div class="form"><label>Full name<input id="m-name" autocomplete="off"></label><label>Email<input id="m-email" type="email" autocomplete="off"></label><div><button class="btn" type="submit">Add member</button></div></div><div class="err" id="m-msg" role="alert"></div></form>'+
+    '<div class="card"><div class="tablewrap"><table><thead><tr><th>Name</th><th>Email</th><th class="num">Attended</th><th class="num">Rate</th><th class="num">Points</th><th>Last attended</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function render(){
+  if(scanner)stopScan();
+  var head='<div class="top"><div><h1>Epik Leaders Esprit</h1><p>HR events: plan events, issue QR tickets, check people in and follow engagement.</p></div>'+
+    (user?'<div class="topbtns"><small>'+esc(user.email||'')+'</small><button class="btn ghost small" data-a="refresh">Refresh</button><button class="btn ghost small" data-a="logout">Sign out</button></div>':'')+'</div>';
+  if(!sb){app.innerHTML=head+'<div class="notice bad">The page could not load its database library. Check your internet connection and reload.</div>';return}
+  if(!user){app.innerHTML=head+vLogin();return}
+  var tabs=[['dashboard','Dashboard'],['events','Events'],['checkin','Check-in'],['members','Members']];
+  var body;
+  if(loadErr)body='<div class="card stack"><div class="err">Could not load the data: '+esc(loadErr)+'</div><div><button class="btn" data-a="refresh">Try again</button></div></div>';
+  else if(loading&&!loaded)body='<div class="card">Loading…</div>';
+  else body=view==='dashboard'?vDashboard():view==='events'?vEvents():view==='checkin'?vCheckin():vMembers();
+  app.innerHTML=head+(notice?'<div class="notice bad" role="alert">'+esc(notice)+'</div>':'')+
+    '<nav aria-label="Sections">'+tabs.map(function(t){return '<button data-a="tab" data-v="'+t[0]+'"'+(view===t[0]?' aria-current="page"':'')+'>'+t[1]+'</button>'}).join('')+'</nav>'+body;
+}
+
+/* ---------- check-in ---------- */
+async function doCheckin(raw){
+  var c=String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!c){ciResult={kind:'bad',title:'Enter a code',msg:'Type or scan the 6-character code on the ticket.'};paintCi();return}
+  var r;
+  try{r=await sb.rpc('check_in',{p_code:c,p_event:ciEvent})}catch(x){r={error:x}}
+  if(r.error||!r.data){ciResult={kind:'bad',title:'Could not check in',msg:(r.error&&r.error.message)||'Check the connection and try again.'};paintCi();return}
+  var d=r.data;
+  if(d.status==='ok'){
+    var reg=S.regs.filter(function(x){return x.code===c})[0];
+    if(reg){reg.status='present';reg.at=d.at}else{try{await refreshLive()}catch(x){}}
+    ciResult={kind:'ok',title:d.name,msg:'Checked in at '+fmtTime(d.at)+' · ticket '+c};
+    try{if(navigator.vibrate)navigator.vibrate(120)}catch(x){}
+  }else if(d.status==='already'){
+    ciResult={kind:'dup',title:'Already checked in',msg:d.name+' was checked in at '+fmtTime(d.at)+'. Possible shared ticket.'};
+  }else if(d.status==='wrong_event'){
+    ciResult={kind:'bad',title:'Wrong event',msg:d.name+' holds a ticket for "'+d.event+'".'};
+  }else{
+    ciResult={kind:'bad',title:'Invalid code',msg:'No ticket matches '+c+'. Check the code or search by name.'};
+  }
+  paintCi();
+}
+function onScan(text){
+  var now=Date.now();
+  if(text===lastScan.t&&now-lastScan.at<3000)return;
+  lastScan={t:text,at:now};
+  doCheckin(text);
+}
+async function stopScan(){
+  if(!scanner)return;
+  var s=scanner;scanner=null;
+  try{await s.stop()}catch(e){}
+  try{s.clear()}catch(e){}
+  if($('reader'))$('reader').hidden=true;
+  if($('cam-btn'))$('cam-btn').textContent='Scan with camera';
+}
+async function toggleCamera(){
+  if(scanner){await stopScan();return}
+  if(!window.Html5Qrcode){ciResult={kind:'bad',title:'Scanner not loaded',msg:'Check your internet connection and reload the page.'};paintCi();return}
+  $('reader').hidden=false;
+  var s=new Html5Qrcode('reader');
+  scanner=s;
+  try{
+    await s.start({facingMode:'environment'},{fps:10,qrbox:{width:220,height:220}},onScan,function(){});
+    $('cam-btn').textContent='Stop camera';
+  }catch(e){
+    scanner=null;$('reader').hidden=true;
+    ciResult={kind:'bad',title:'Camera not available',msg:'Allow camera access in the browser settings, or type the code instead.'};paintCi();
+  }
+}
+
+/* ---------- actions ---------- */
+function regMessage(d){
+  return {already_registered:'This email is already registered for this event.',full:'This event is full.',closed:'Registration is closed because the event date has passed.'}[d.status]||d.message||'Registration failed.';
+}
+app.addEventListener('click',async function(ev){
+  var el=ev.target.closest('[data-a]');if(!el)return;
+  var a=el.dataset.a;
+  if(a==='tab'){view=el.dataset.v;if(view!=='events')selEvent=null;notice=null;render()}
+  else if(a==='open'){selEvent=el.dataset.id;ticket=null;regMsg=null;render();window.scrollTo(0,0)}
+  else if(a==='back'){selEvent=null;render()}
+  else if(a==='newtoggle'){showNew=!showNew;render()}
+  else if(a==='closeticket'){ticket=null;render()}
+  else if(a==='task'){
+    var e=eById(el.dataset.id), t=e.tasks[+el.dataset.i], want=el.checked;
+    t.d=want;
+    var r=await sb.from('tasks').update({done:want}).eq('id',t.id);
+    if(r.error){t.d=!want;notice='Could not save the task: '+r.error.message;render()}
+  }
+  else if(a==='gocheckin'){ciEvent=el.dataset.id;ciResult=null;ciQuery='';view='checkin';render();window.scrollTo(0,0)}
+  else if(a==='scan'){doCheckin(el.dataset.code)}
+  else if(a==='camera'){toggleCamera()}
+  else if(a==='csv'){csvOpen=!csvOpen;render()}
+  else if(a==='copycsv'){
+    var ta=$('csv'), m=$('csvmsg');ta.select();
+    var ok=function(){m.textContent='Copied.'}, no=function(){m.textContent='Press Ctrl+C to copy the selected text.'};
+    try{navigator.clipboard.writeText(ta.value).then(ok,no)}catch(x){no()}
+  }
+  else if(a==='copylink'){
+    var inp=$('plink'), lm=$('linkmsg');inp.select();
+    var ok2=function(){lm.textContent='Link copied.'}, no2=function(){lm.textContent='Press Ctrl+C to copy the selected link.'};
+    try{navigator.clipboard.writeText(inp.value).then(ok2,no2)}catch(x){no2()}
+  }
+  else if(a==='refresh'){notice=null;loadAll()}
+  else if(a==='logout'){await stopScan();await sb.auth.signOut();user=null;S={members:[],events:[],regs:[]};loaded=false;render()}
+});
+app.addEventListener('change',function(ev){
+  if(ev.target.id==='ci-event'){ciEvent=ev.target.value;ciResult=null;ciQuery='';render()}
+});
+app.addEventListener('input',function(ev){
+  if(ev.target.id==='ci-q'){ciQuery=ev.target.value;$('ci-list').innerHTML=ciList()}
+});
+app.addEventListener('submit',async function(ev){
+  ev.preventDefault();
+  var f=ev.target.dataset.form, v=function(id){return $(id).value};
+  if(f==='login'){
+    var lm=$('l-msg');lm.textContent='';
+    var r=await sb.auth.signInWithPassword({email:v('l-email').trim(),password:v('l-pass')});
+    if(r.error){lm.textContent='Wrong email or password.';return}
+    user=r.data.user;await loadAll();
+  }
+  else if(f==='reg'){
+    var res=await sb.rpc('register_for_event',{p_event:selEvent,p_name:v('r-name'),p_email:v('r-email')});
+    if(res.error||!res.data){regMsg=(res.error&&res.error.message)||'Registration failed.';ticket=null}
+    else if(res.data.status==='ok'){regMsg=null;ticket={eventId:selEvent,code:res.data.code,name:res.data.name};try{await refreshLive()}catch(x){}}
+    else{regMsg=regMessage(res.data);ticket=null}
+    render();
+  }
+  else if(f==='code'){
+    var code=v('ci-code');
+    await doCheckin(code);
+    if($('ci-code')){$('ci-code').value='';$('ci-code').focus()}
+  }
+  else if(f==='walk'){
+    var email=v('w-email').trim().toLowerCase(), name=v('w-name');
+    var w=await sb.rpc('register_for_event',{p_event:ciEvent,p_name:name,p_email:email});
+    if(w.error||!w.data){ciResult={kind:'bad',title:'Cannot register',msg:(w.error&&w.error.message)||'Try again.'};paintCi();return}
+    if(w.data.status==='ok'){
+      try{await refreshLive()}catch(x){}
+      await doCheckin(w.data.code);
+    }else if(w.data.status==='already_registered'){
+      var mem=S.members.filter(function(m){return m.email===email})[0];
+      var rg=mem&&S.regs.filter(function(x){return x.eventId===ciEvent&&x.memberId===mem.id})[0];
+      if(rg)await doCheckin(rg.code);
+      else{ciResult={kind:'bad',title:'Already registered',msg:'Press Refresh, then search for the name in the list.'};paintCi()}
+    }else{ciResult={kind:'bad',title:'Cannot register',msg:regMessage(w.data)};paintCi()}
+    if($('w-name')){$('w-name').value='';$('w-email').value=''}
+  }
+  else if(f==='member'){
+    var mm=$('m-msg');mm.textContent='';
+    var nm=v('m-name').trim(), em=v('m-email').trim().toLowerCase();
+    if(nm.length<2||!/^\S+@\S+\.\S+$/.test(em)){mm.textContent='Enter a name and a valid email address.';return}
+    var ins=await sb.from('members').insert({name:nm,email:em});
+    if(ins.error){mm.textContent=ins.error.code==='23505'?'A member with this email already exists.':ins.error.message;return}
+    await refreshLive();render();
+  }
+  else if(f==='new'){
+    var title=v('n-title').trim(), place=v('n-place').trim(), date=v('n-date');
+    if(!title||!place||!date)return;
+    var org=v('n-org')||null;
+    var evIns=await sb.from('events').insert({title:title,type:v('n-type'),event_date:date,event_time:v('n-time')||'18:00',place:place,capacity:Math.max(1,parseInt(v('n-cap'),10)||40),organizer_id:org}).select().single();
+    if(evIns.error){notice='Could not create the event: '+evIns.error.message;render();return}
+    var nid=evIns.data.id;
+    var tk=['Book the venue','Announce on social media','Prepare the check-in team'].map(function(t){return {event_id:nid,title:t,owner_id:org}});
+    await sb.from('tasks').insert(tk);
+    showNew=false;selEvent=nid;ticket=null;regMsg=null;
+    await loadAll();
+  }
+});
+
+/* ---------- start ---------- */
+async function boot(){
+  if(!sb){render();return}
+  var s=await sb.auth.getSession();
+  user=s.data&&s.data.session?s.data.session.user:null;
+  sb.auth.onAuthStateChange(function(evt,session){
+    if(evt==='SIGNED_OUT'&&user){user=null;S={members:[],events:[],regs:[]};loaded=false;setTimeout(render,0)}
+  });
+  if(user)await loadAll();else render();
+  setInterval(async function(){
+    if(user&&loaded&&view==='checkin'&&!document.hidden){try{await refreshLive();paintCi()}catch(x){}}
+  },12000);
+}
+boot();
+})();
+</script>
+</body>
+</html>
