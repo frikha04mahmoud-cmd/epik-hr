@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Event registration · Epik Leaders Esprit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#EDF1F6; --surface:#FFFFFF; --ink:#0D2036; --muted:#566A80; --line:#D2DBE6;
+  --accent:#1D5A7D; --accent-ink:#FFFFFF; --accent-soft:#D8E7F1; --brand:#D62839;
+  --bad:#B3261E; --bad-soft:#F9DEDB; --good:#1B7F4B; --good-soft:#DDF1E5;
+  --font-display:"Space Grotesk","Inter",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0A1626; --surface:#102338; --ink:#E8EEF5; --muted:#92A6BB; --line:#223A53;
+    --accent:#5DB0DA; --accent-ink:#06141F; --accent-soft:#16384F; --brand:#FF5766;
+    --bad:#F28B82; --bad-soft:#3A1A18; --good:#5CC48A; --good-soft:#14301F;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;
+  padding:20px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:var(--font-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:22px}
+h2{font-size:20px}
+.brand{border-left:5px solid var(--brand);padding-left:12px}
+.brand small{color:var(--muted);display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.facts{color:var(--muted);display:flex;flex-direction:column;gap:2px}
+label{display:flex;flex-direction:column;gap:4px;font-weight:500;font-size:14px}
+input{font:16px var(--font-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;width:100%}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.check{flex-direction:row;gap:8px;align-items:flex-start;font-weight:400;color:var(--muted);font-size:13px}
+.check input{width:auto;margin-top:3px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;font:600 15px var(--font-body);padding:12px 16px;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:default}
+.msg{border-radius:6px;padding:10px 12px;font-size:14px}
+.msg.bad{background:var(--bad-soft);color:var(--bad)}
+.msg.good{background:var(--good-soft);color:var(--good)}
+.ticket{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.qr{background:#fff;padding:8px;border-radius:6px;width:min(100%,240px);aspect-ratio:1}
+.qr svg{width:100%;height:100%;display:block}
+.code{font:700 32px var(--font-mono);letter-spacing:.16em;color:var(--accent)}
+.note{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><h1>Epik Leaders Esprit</h1><small>Event registration</small></div>
+  <div id="root"><div class="card">Loading…</div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="config.js"></script>
+<script>
+(function(){
+var root=document.getElementById('root');
+var id=new URLSearchParams(location.search).get('e');
+var sb=null, ev=null;
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fmtDate(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+function t5(t){return String(t||'').slice(0,5)}
+function qr(text){try{var q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch(e){return ''}}
+function msg(kind,text){return '<div class="card"><div class="msg '+kind+'">'+esc(text)+'</div></div>'}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+
+function form(note){
+  return '<div class="card"><h2>'+esc(ev.title)+'</h2><div class="facts"><span>'+esc(fmtDate(ev.date))+' · '+esc(t5(ev.time))+'</span><span>'+esc(ev.place)+'</span><span>'+esc(ev.spots_left)+' places left</span></div></div>'+
+  '<form class="card" id="f" novalidate><label>Full name<input id="name" autocomplete="name" required></label>'+
+  '<label>Email<input id="email" type="email" autocomplete="email" required></label>'+
+  '<label class="check"><input type="checkbox" id="consent"><span>I agree that the club HR team stores my name and email to manage attendance at club events.</span></label>'+
+  (note?'<div class="msg bad" role="alert">'+esc(note)+'</div>':'')+
+  '<button class="btn" id="go" type="submit">Register</button></form>';
+}
+function ticket(d){
+  var svg=qr(d.code);
+  root.innerHTML='<div class="card ticket"><div class="msg good">You are registered.</div>'+
+    '<div class="qr" role="img" aria-label="QR code for your ticket">'+(svg||'')+'</div>'+
+    '<div class="code">'+esc(d.code)+'</div>'+
+    '<div><b>'+esc(d.name)+'</b><br>'+esc(d.event)+'<br><span class="note">'+esc(fmtDate(d.date))+' · '+esc(t5(d.time))+' · '+esc(d.place)+'</span></div>'+
+    '<p class="note">Take a screenshot of this ticket. Show the QR code, or tell the code, at the entrance.</p></div>';
+  window.scrollTo(0,0);
+}
+async function submit(e){
+  e.preventDefault();
+  var name=document.getElementById('name').value, email=document.getElementById('email').value, btn=document.getElementById('go');
+  if(!document.getElementById('consent').checked){root.innerHTML=form('Please tick the box to agree before registering.');bind(name,email);return}
+  btn.disabled=true;btn.textContent='Registering…';
+  var r;
+  try{r=await sb.rpc('register_for_event',{p_event:id,p_name:name,p_email:email})}catch(x){r={error:x}}
+  if(r.error||!r.data){root.innerHTML=form('Something went wrong. Check your connection and try again.');bind(name,email);return}
+  var d=r.data;
+  if(d.status==='ok'){ticket(d);return}
+  var m={already_registered:'You are already registered for this event. If you lost your ticket, contact the HR team.',full:'Sorry, this event is full.',closed:'Registration for this event is closed.'}[d.status]||d.message||'Registration failed.';
+  root.innerHTML=form(m);bind(name,email);
+}
+function bind(name,email){
+  document.getElementById('name').value=name||'';
+  document.getElementById('email').value=email||'';
+  document.getElementById('f').addEventListener('submit',submit);
+}
+async function start(){
+  if(!id){root.innerHTML=msg('bad','This link is incomplete. Ask the club for the registration link of your event.');return}
+  if(!window.supabase||!window.APP_CONFIG){root.innerHTML=msg('bad','The page could not load. Check your connection and reload.');return}
+  sb=window.supabase.createClient(window.APP_CONFIG.SUPABASE_URL,window.APP_CONFIG.SUPABASE_KEY);
+  var r;
+  try{r=await sb.rpc('event_public_info',{p_event:id})}catch(x){r={error:x}}
+  if(r.error){root.innerHTML=msg('bad','Could not load the event. Check your connection and reload.');return}
+  if(!r.data){root.innerHTML=msg('bad','This event was not found. Check the link.');return}
+  ev=r.data;
+  if(ev.date<today()){root.innerHTML='<div class="card"><h2>'+esc(ev.title)+'</h2><div class="msg bad">Registration for this event is closed.</div></div>';return}
+  if(ev.spots_left<1){root.innerHTML='<div class="card"><h2>'+esc(ev.title)+'</h2><div class="msg bad">Sorry, this event is full.</div></div>';return}
+  root.innerHTML=form('');bind('','');
+}
+start();
+})();
+</script>
+</body>
+</html>
